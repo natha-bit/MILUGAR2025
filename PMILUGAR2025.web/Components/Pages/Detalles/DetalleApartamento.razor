@@ -1,0 +1,76 @@
+﻿@page "/detalle/{id:int}"
+@using PMILUGAR2025.web.Data.Services
+@using PMILUGAR2025.web.Data.Dtos
+@inject IApartamentoServices ApartamentoService
+
+@if (apartamento != null)
+{
+    <div>
+        @if (imagenes.Any())
+        {
+            <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    @for (int i = 0; i < imagenes.Count; i++)
+                    {
+                        <div class="carousel-item @(i == 0 ? "active" : "")">
+                            <img src="@imagenes[i]" class="d-block w-100" style="max-height: 400px; object-fit: cover;" />
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            </div>
+        }
+
+        <div class="apartamento-card">
+            <br />
+            <div class="Carddd">
+                <h2 class="mt-3">@apartamento.Titulo</h2>
+                <h4 style="color: green;">RD$@apartamento.PrecioMesual /mes</h4>
+                <p><strong>Publicado por:</strong> @apartamento.PropietarioNombre</p>
+
+                <h5>Descripción</h5>
+                <p>@apartamento.Descripcion</p>
+
+                <h5 class="fw-bold mt-4">Ubicación</h5>
+                <p><i class="bi bi-geo-alt-fill me-2"></i>@apartamento.Ciudad, @apartamento.Direccion</p>
+
+                <h5>Características</h5>
+                <ul class="list-unstyled">
+                    <li><i class="bi bi-house-door-fill"></i>  @apartamento.NumeroHabitaciones Habitaciones</li>
+                    <li><i class="bi bi-droplet-half me-2"></i>@apartamento.NumeroBanios baños</li>
+                    <li><i class="bi bi-aspect-ratio me-2"></i>@apartamento.Area Metros m²</li>
+                    <li><i class="bi bi-check2-circle me-2"></i>@apartamento.ServiciosAdicionales</li>
+                </ul>
+            </div>
+            <button class="btnRese">RESERVAR AHORA</button>
+        </div>
+    </div>
+
+}
+
+
+
+@code {
+    [Parameter] public int id { get; set; }
+    private ApartamentoDtos? apartamento;
+    private List<string> imagenes = new();
+
+    protected override void OnInitialized()
+    {
+        apartamento = ApartamentoService.Consultar().FirstOrDefault(x => x.Id == id);
+
+        if (apartamento != null && !string.IsNullOrWhiteSpace(apartamento.ImagenUrls))
+        {
+            imagenes = apartamento.ImagenUrls
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(url => url.Trim())
+                .ToList();
+        }
+    }
+}
+
