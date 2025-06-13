@@ -13,7 +13,6 @@
 }
 
 <div class="crear-apartamento">
-    <!-- Información básica -->
     <div class="form-section">
         <h3>Información del Apartamento</h3>
         <div class="form-grid">
@@ -26,7 +25,6 @@
                 <label>Ciudad</label>
                 <input type="text" @bind="nuevoApartemento.Ciudad" class="form-control" />
             </div>
-
             <div>
                 <label>Dirección</label>
 				<input type="text" @bind="nuevoApartemento.Direccion" class="form-control" />
@@ -44,7 +42,6 @@
         </div>
     </div>
 
-    <!-- Detalles -->
     <div class="form-section">
         <h3>Detalles del Apartamento</h3>
         <div class="form-grid">
@@ -69,8 +66,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Imágenes -->
     <div class="form-section">
         <h3>Imágenes del Apartamento</h3>
         <div class="image-upload-area">
@@ -87,7 +82,6 @@
         </div>
     </div>
 
-    <!-- Botón -->
     <div class="form-actions">
         <button type="button"
                 @onclick="() => GuardarApartamento()"
@@ -113,13 +107,11 @@
             {
                 nuevoApartemento = apto;
 
-                // Poblar previews con las imágenes existentes
                 previews = (apto.ImagenUrls ?? "")
                     .Split(',', StringSplitOptions.RemoveEmptyEntries)
                     .Select(url => url.Trim())
                     .ToList();
 
-                // También poblar imagenesSubidas para mantener consistencia
                 imagenesSubidas = previews.ToList();
             }
             else
@@ -162,13 +154,11 @@
             bool exito;
             if (id.HasValue)
             {
-                // Editar
                 exito = ApartamentoService.Modificar(nuevoApartemento);
                 mensaje = exito ? "Apartamento actualizado exitosamente." : "Error al actualizar el apartamento.";
             }
             else
             {
-                // Crear
                 exito = ApartamentoService.Crear(nuevoApartemento);
                 mensaje = exito ? "Apartamento agregado exitosamente." : "Error al guardar el apartamento.";
                 if (exito)

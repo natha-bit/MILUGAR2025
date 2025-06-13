@@ -11,7 +11,6 @@ namespace PMILUGAR2025.web.Data.Entities
         public String Titulo { get; set; } = null!;
         public String Descripcion { get; set; } = null!;
         public string ImagenUrls { get; set; } = null!;
-        [Required(ErrorMessage = "La ciudad es obligatoria.")]
         public string Ciudad { get; set; } = null!;
         public String Direccion { get; set; } = null!;
         public decimal PrecioMesual { get; set; }
