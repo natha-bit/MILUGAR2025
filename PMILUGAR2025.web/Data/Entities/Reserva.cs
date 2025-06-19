@@ -8,13 +8,16 @@ namespace PMILUGAR2025.web.Data.Entities
     {
         [Key]
         public int Id { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
-        public String Estado { get; set; }
+        public DateTime FechaSolicitud { get; set; }
+        public string Estado { get; set; }
+        public string NombreUsuario { get; set; }
+        public string NombreApartamento { get; set; }
+        public string Contacto { get; set; }
+        public string UsuarioId { get; set; }
+        public ApplicationUser Usuario { get; set; }
         public int ApartamentoId { get; set; }
         [ForeignKey("ApartamentoId")]
         public Apartamento Apartamento { get; set; }
-        public ApplicationUser UsuarioId { get; set; }
-        
+
     }
 }

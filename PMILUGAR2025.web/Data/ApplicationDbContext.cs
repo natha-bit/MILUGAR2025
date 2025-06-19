@@ -20,9 +20,9 @@ namespace PMILUGAR2025.web.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Entities.Reserva>()
-                .HasOne(r => r.Apartamento)
-                .WithMany()
-                .HasForeignKey(r => r.ApartamentoId)
+                .HasOne(r => r.Usuario)
+                .WithMany(u => u.Reservas)
+                .HasForeignKey(r => r.UsuarioId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
 

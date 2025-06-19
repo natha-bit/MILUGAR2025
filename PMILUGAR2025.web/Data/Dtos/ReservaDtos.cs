@@ -3,10 +3,13 @@
     public class ReservaDtos
     {
         public int Id { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateTime FechaSolicitud { get; set; }
         public string Estado { get; set; }
         public int ApartamentoId { get; set; }
-        public int UsuarioId { get; set; }
+        public string UsuarioId { get; set; }
+        public string NombreUsuario { get; set; }
+        public string NombreApartamento { get; set; }
+        public string Contacto { get; set; }
+
     }
 }

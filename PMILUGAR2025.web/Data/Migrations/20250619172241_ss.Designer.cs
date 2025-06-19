@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMILUGAR2025.web.Data;
 
@@ -11,9 +12,11 @@ using PMILUGAR2025.web.Data;
 namespace PMILUGAR2025.web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619172241_ss")]
+    partial class ss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,34 +300,24 @@ namespace PMILUGAR2025.web.Migrations
                     b.Property<int>("ApartamentoId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Contacto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("FechaSolicitud")
+                    b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NombreApartamento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("usuario")
-                        .IsRequired()
+                    b.Property<string>("UsuarioIdId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApartamentoId");
 
-                    b.HasIndex("usuario");
+                    b.HasIndex("UsuarioIdId");
 
                     b.ToTable("Reservas");
                 });
@@ -393,28 +386,24 @@ namespace PMILUGAR2025.web.Migrations
 
             modelBuilder.Entity("PMILUGAR2025.web.Data.Entities.Reserva", b =>
                 {
-                    b.HasOne("PMILUGAR2025.web.Data.Entities.Apartamento", "apartamento")
+                    b.HasOne("PMILUGAR2025.web.Data.Entities.Apartamento", "Apartamento")
                         .WithMany()
                         .HasForeignKey("ApartamentoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PMILUGAR2025.web.Data.ApplicationUser", "UsuarioId")
-                        .WithMany("Reservas")
-                        .HasForeignKey("usuario")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UsuarioIdId");
+
+                    b.Navigation("Apartamento");
 
                     b.Navigation("UsuarioId");
-
-                    b.Navigation("apartamento");
                 });
 
             modelBuilder.Entity("PMILUGAR2025.web.Data.ApplicationUser", b =>
                 {
                     b.Navigation("Apartamentos");
-
-                    b.Navigation("Reservas");
                 });
 #pragma warning restore 612, 618
         }

@@ -40,6 +40,42 @@
             <button type="button" class="btn-login" @onclick="Login">INICIAR SESIÓN</button>
             </form>
         }
+        @if (esVendedor)
+        {
+            <div class="notificacion-reservas" style="position: relative; display: inline-block;">
+                <button class="btn-notificacion" @onclick="MostrarReservas">
+                    🔔
+                    @if (ReservasPendientes.Count > 0)
+                    {
+                        <span class="badge">@ReservasPendientes.Count</span>
+                    }
+                </button>
+                @if (mostrarReservas)
+                {
+                    <div class="dropdown-reservas">
+                        <h6>Solicitudes de Reserva</h6>
+                        @if (ReservasPendientes.Count == 0)
+                        {
+                            <p>No hay solicitudes pendientes.</p>
+                        }
+                        else
+                        {
+                            <ul>
+                                @foreach (var reserva in ReservasPendientes)
+                                {
+                                    <li>
+                                        <strong>@reserva.NombreUsuario</strong> quiere reservar <em>@reserva.NombreApartamento</em>
+                                        <br />
+                                        <small>@reserva.Contacto</small>
+                                        <small>@reserva.FechaSolicitud.ToString("dd/MM/yyyy")</small>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                }
+            </div>
+        }
     </div>
     <div class="info-box">
         <h4>Información personal</h4>
@@ -51,12 +87,13 @@
     </div>
 
 
-    @if (!esVendedor)
+    @if (isAuthenticated && !esVendedor)
     {
         <div class="vendedor-box">
             <button type="button" class="btnVendedor" @onclick="MostrarModal">Conviértete en vendedor</button>
         </div>
     }
+
     @if (esVendedor)
     {
     <button type="button" class="btn-editar" disabled="@(!esVendedor)" @onclick="IrACrearApartamento">
@@ -115,6 +152,8 @@
     private string? Rol;
     private List<ApartamentoDtos> MisApartamentos = new();
     private bool isAuthenticated;
+    private List<ReservaDtos> ReservasPendientes = new();
+    private bool mostrarReservas = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -202,7 +241,10 @@
             }
         }
     }
-
+    private void MostrarReservas()
+    {
+        mostrarReservas = !mostrarReservas;
+    }
     private void Login()
     {
         Navigation.NavigateTo("/Account/Login");

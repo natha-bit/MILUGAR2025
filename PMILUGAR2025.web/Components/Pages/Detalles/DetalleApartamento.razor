@@ -1,7 +1,12 @@
 ﻿@page "/detalle/{id:int}"
 @using PMILUGAR2025.web.Data.Services
 @using PMILUGAR2025.web.Data.Dtos
+@using System.Security.Claims;
+
 @inject IApartamentoServices ApartamentoService
+@inject IHttpContextAccessor httpAccessor
+@inject IReservaServices ReservaService
+@inject NavigationManager Navigation
 
 @if (apartamento != null)
 {
@@ -47,7 +52,9 @@
                     <li><i class="bi bi-check2-circle me-2"></i>@apartamento.ServiciosAdicionales</li>
                 </ul>
             </div>
-            <button class="btnRese">RESERVAR AHORA</button>
+            <EditForm Model="nuevaReserva" OnValidSubmit="CrearReserva" FormName="ReservaForm">
+                <button type="submit" class="btnRese">RESERVAR AHORA</button>
+            </EditForm>
         </div>
     </div>
 
@@ -59,10 +66,30 @@
     [Parameter] public int id { get; set; }
     private ApartamentoDtos? apartamento;
     private List<string> imagenes = new();
+    ReservaDtos nuevaReserva = new();
+    ApartamentoDtos apartamentos;
 
     protected override void OnInitialized()
     {
+        var user = httpAccessor.HttpContext?.User;
+        var userId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userName = user?.Identity?.Name;
+
         apartamento = ApartamentoService.Consultar().FirstOrDefault(x => x.Id == id);
+        if (apartamento != null)
+        {
+            nuevaReserva = new ReservaDtos
+                {
+                    ApartamentoId = apartamento.Id,
+                    NombreApartamento = apartamento.Titulo,
+                    Estado = "Pendiente",
+                    NombreUsuario = userName ?? "Anónimo",
+                    Contacto = "809-000-0000", // Opcional o lo sacas del usuario
+                    usuario = userId ?? ""
+                };
+        }
+
+        
 
         if (apartamento != null && !string.IsNullOrWhiteSpace(apartamento.ImagenUrls))
         {
@@ -72,5 +99,22 @@
                 .ToList();
         }
     }
+private void CrearReserva()
+   {
+       var resultado = ReservaService.Crear(nuevaReserva);
+       if (resultado)
+       {
+           Navigation.NavigateTo("/misreservas");
+       }
+       else
+       {
+           // Aquí puedes mostrar un mensaje de error en la interfaz
+           // Por ejemplo, usando una variable string errorMessage
+           errorMessage = "No se pudo crear la reserva. Intente nuevamente.";
+       }
+   }
+
+   private string? errorMessage;
+    
 }
 

@@ -29,6 +29,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
  options.UseSqlServer(connectionString));
 builder.Services.AddScoped<IApartamentoServices, ApartamentoServices>();
+builder.Services.AddScoped<IReservaServices, ReservaServices>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

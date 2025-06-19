@@ -77,6 +77,26 @@
     text-align: center;
     align-content: center;
 }
+.notificacion-reservas .badge {
+    background: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.8em;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.dropdown-reservas {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    min-width: 220px;
+    z-index: 100;
+    padding: 10px;
+    right: 0;
+}
 
 .publicaciones-box {
     margin-top: 2rem;
