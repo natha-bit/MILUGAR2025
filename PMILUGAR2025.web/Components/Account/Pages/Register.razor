@@ -38,6 +38,12 @@
             <ValidationMessage For="() => Input.Email" class="text-danger" />
         </div>
 
+            <div class="form-group">
+                <label>Telefono</label>
+                <InputText @bind-Value="Input.Telefono" class="form-control" autocomplete="new-Telefono" placeholder="Numero de telefono" />
+                <ValidationMessage For="() => Input.Telefono" class="text-danger" />
+            </div>
+
         <div class="form-group">
             <label>Contraseña</label>
             <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" placeholder="Contraseña" />
@@ -74,6 +80,7 @@
     {
         var user = CreateUser();
         user.Nombre = Input.Nombre;
+        user.PhoneNumber = Input.Telefono;
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
         await emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -133,6 +140,9 @@
     {
         [Required]
         public string Nombre { get; set; } = string.Empty;
+
+        [Required]
+        public string Telefono { get; set; } = string.Empty;
 
         [Required]
         [EmailAddress]

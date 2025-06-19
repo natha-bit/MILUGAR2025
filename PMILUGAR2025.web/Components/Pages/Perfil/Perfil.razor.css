@@ -174,7 +174,31 @@
     line-height: 1.1;
     white-space: pre-line;
 }
+    .btn-logout:hover {
+        background-color: #b52a37;
+    }
 
-.btn-logout:hover {
-    background-color: #b52a37;
+.btn-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #5cd900;
+    color: #fff;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 0;
+    margin-top: 0;
+    cursor: pointer;
+    transition: background 0.2s;
+    line-height: 1.1;
+    white-space: pre-line;
 }
+    .btn-login:hover {
+        background-color: #50bd00;
+    }
+

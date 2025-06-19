@@ -26,11 +26,20 @@
             <p class="rol">@Rol</p>
             <button type="button" class="btn-editar">✏️ EDITAR PERFIL</button>
         </div>
-        <form class="logout-form" action="Account/Logout" method="post">
-            <AntiforgeryToken />
-            <input type="hidden" name="ReturnUrl" value="Account/Login" />
-            <button type="submit" class="btn-logout">CERRAR SESIÓN</button>
-        </form>
+        @if (isAuthenticated)
+        {
+            <form class="logout-form" action="Account/Logout" method="post">
+                <AntiforgeryToken />
+                <input type="hidden" name="ReturnUrl" value="Account/Login" />
+                <button type="submit" class="btn-logout">CERRAR SESIÓN</button>
+            </form>
+        }
+        else
+        {
+            <form class="logout-form"   >
+            <button type="button" class="btn-login" @onclick="Login">INICIAR SESIÓN</button>
+            </form>
+        }
     </div>
     <div class="info-box">
         <h4>Información personal</h4>
@@ -105,6 +114,7 @@
     private string? Telefono;
     private string? Rol;
     private List<ApartamentoDtos> MisApartamentos = new();
+    private bool isAuthenticated;
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,6 +122,8 @@
         currentUrl = Navigation.ToBaseRelativePath(Navigation.Uri);
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
+        isAuthenticated = user.Identity is not null && user.Identity.IsAuthenticated;
+
 
         if (user.Identity is not null && user.Identity.IsAuthenticated)
         {
@@ -191,11 +203,9 @@
         }
     }
 
-
-
-    private void Logout()
+    private void Login()
     {
-        Navigation.NavigateTo("/logout", forceLoad: true);
+        Navigation.NavigateTo("/Account/Login");
     }
 
 
